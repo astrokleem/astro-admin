@@ -13,6 +13,9 @@ function Support() {
     queryKey: ["support-tickets"],
     refetchOnWindowFocus: false,
     queryFn: supportApi.listAll,
+    onError: () => {
+      window.location.reload();
+    },
   });
 
   if (isLoading) return <div>Loading...</div>;

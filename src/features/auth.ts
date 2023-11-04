@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 
 interface AuthState {
   token: string | null;
@@ -36,36 +36,43 @@ interface AuthState {
 // }),
 
 const useAuthStore = create<AuthState>()(
-  persist(
-    (set) => ({
-      token: null,
-      user: null,
-      isAuthenticated: false,
-      setUser: (user: string) => {
-        set({ user });
-      },
-      setToken: (token) => {
-        set({
-          token,
-          isAuthenticated: true,
-        });
-      },
-      logOut: () => {
-        set({ token: null, user: null, isAuthenticated: false });
-      },
-      fetchFromLocalStorage: () => {
-        const token = localStorage.getItem("token");
-        const user = localStorage.getItem("user");
-        if (token && user) {
-          set(() => ({ token, user: JSON.parse(user), isAuthenticated: true }));
-        }
-      },
-    }),
-    {
-      name: "auth-storage",
-      getStorage: () => localStorage,
-    }
+  devtools(
+    persist(
+      (set) => ({
+        token: null,
+        user: null,
+        isAuthenticated: false,
+        setUser: (user: string) => {
+          set({ user });
+        },
+        setToken: (token) => {
+          set({
+            token,
+            isAuthenticated: true,
+          });
+        },
+        logOut: () => {
+          set({ token: null, user: null, isAuthenticated: false });
+        },
+        fetchFromLocalStorage: () => {
+          const token = localStorage.getItem("token");
+          const user = localStorage.getItem("user");
+          if (token && user) {
+            set(() => ({
+              token,
+              user: JSON.parse(user),
+              isAuthenticated: true,
+            }));
+          }
+        },
+      }),
+      {
+        name: "auth-storage",
+        getStorage: () => localStorage,
+      }
+    )
   )
 );
+export const token = useAuthStore.getState().token;
 
 export default useAuthStore;

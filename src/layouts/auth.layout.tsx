@@ -1,14 +1,15 @@
 import { FC } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import Sidebar from '../components/Sidebar';
 import useAuthStore from '../features/auth';
 
 const AuthLayout: FC = () => {
   const user = useAuthStore((state) => state.user);
+  const location = useLocation();
 
   if (!user) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" state={{ from: location }} />;
   }
 
   return (

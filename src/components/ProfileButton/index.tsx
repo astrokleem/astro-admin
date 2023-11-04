@@ -27,8 +27,8 @@ function ProfileButton() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex flex-col">
-            <h3 className="font-semibold">{user?.name}</h3>
-            <h4 className="text-sm font-semibold">{user?.email}</h4>
+            <h3 className="font-semibold">{JSON.parse(user)?.name}</h3>
+            <h4 className="text-sm font-semibold">{JSON.parse(user)?.email}</h4>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[260px] -ml-8 mb-4">

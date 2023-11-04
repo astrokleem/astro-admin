@@ -1,6 +1,6 @@
 import {
-    Badge, Button, Card, Color, Flex, Table, TableBody, TableCell, TableHead, TableHeaderCell,
-    TableRow, Text, Title
+    Badge, Button, Card, Color, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow,
+    Text
 } from '@tremor/react';
 
 const colors: { [key: string]: Color } = {

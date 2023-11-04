@@ -6,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import {
     Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle
 } from '@/components/ui/sheet';
-import { PaperClipIcon } from '@heroicons/react/solid';
 import { useQuery } from '@tanstack/react-query';
 
 import supportApi from '../../api/support';

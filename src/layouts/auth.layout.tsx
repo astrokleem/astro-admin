@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import Sidebar from '../components/Sidebar';
-import Topbar from '../components/Topbar';
 import useAuthStore from '../features/auth';
 
 const AuthLayout: FC = () => {

@@ -2,7 +2,7 @@ import { Link, Outlet } from 'react-router-dom';
 
 import { useQuery } from '@tanstack/react-query';
 import {
-    BadgeDelta, Card, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow
+    Card, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow
 } from '@tremor/react';
 
 import supportApi from '../../api/support';

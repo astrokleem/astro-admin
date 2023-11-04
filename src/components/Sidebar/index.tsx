@@ -1,10 +1,5 @@
-import {
-    FileSpreadsheet, LayoutDashboard, PercentDiamond, TableProperties, Ticket, Users2, Wrench
-} from 'lucide-react';
-import { useState } from 'react';
+import { LayoutDashboard, PercentDiamond, Ticket, Users2, Wrench } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-import { useTheme } from '@/contexts/theme-provider';
 
 import ProfileButton from '../ProfileButton';
 import CollapsibleMenu from './collapsibleMenu';
@@ -48,17 +43,17 @@ const links = [
 ];
 
 function Sidebar() {
-  const [isVisible, setIsVisible] = useState(true);
-  const { setTheme } = useTheme();
-  const notify = () => {
-    // addNotification({
-    //   title: "Warning",
-    //   subtitle: "Please fill it",
-    //   message: "You have to enter name",
-    //   theme: "red",
-    //   closeButton: "X",
-    // });
-  };
+  // const [isVisible, setIsVisible] = useState(true);
+  // const { setTheme } = useTheme();
+  // const notify = () => {
+  //   // addNotification({
+  //   //   title: "Warning",
+  //   //   subtitle: "Please fill it",
+  //   //   message: "You have to enter name",
+  //   //   theme: "red",
+  //   //   closeButton: "X",
+  //   // });
+  // };
 
   return (
     <aside className="w-[280px] min-h-screen p-4 dark:text-white text-black bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 fixed left-0 z-10">

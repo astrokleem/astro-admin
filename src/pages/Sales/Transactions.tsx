@@ -1,26 +1,9 @@
-import { CashIcon, TicketIcon, UserGroupIcon } from "@heroicons/react/solid"
 import {
-  Badge,
-  Button,
-  Card,
-  CategoryBar,
-  Color,
-  Flex,
-  Grid,
-  Icon,
-  Legend,
-  Metric,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableRow,
-  Text,
-  Title
-} from "@tremor/react"
+    Badge, Button, Card, CategoryBar, Color, Flex, Grid, Legend, Metric, Table, TableBody,
+    TableCell, TableHead, TableHeaderCell, TableRow, Text, Title
+} from '@tremor/react';
 
-import { ApplicationsSheet } from "../Customers/Components/applicationSheet"
+import { ApplicationsSheet } from '../Customers/Components/applicationSheet';
 
 const colors: { [key: string]: Color } = {
   cancelled: "gray",

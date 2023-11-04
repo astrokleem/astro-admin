@@ -28,7 +28,7 @@ function Login() {
       user: { name: string; email: string };
       token: string;
     }) => {
-      setUser(JSON.stringify(data.user));
+      setUser(data.user);
       setToken(data.token);
       setIsLoggingIn(false);
     },

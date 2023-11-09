@@ -1,7 +1,6 @@
 import { QueryKey, useQuery } from '@tanstack/react-query';
 import {
-    Badge, Button, Card, Color, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow,
-    Text
+    Badge, Card, Color, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Text
 } from '@tremor/react';
 
 import userApi from '../../api/user';

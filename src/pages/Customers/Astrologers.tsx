@@ -1,39 +1,33 @@
+import { QueryKey, useQuery } from '@tanstack/react-query';
 import {
     Card, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Text
 } from '@tremor/react';
 
-const salesPeople: {
-  name: string;
-  profilepicture: string;
-  num_connections: number;
-  earnings: string;
-  location: string;
-}[] = [
-  {
-    name: "Peter Doe",
-    profilepicture:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/1200px-Donald_Trump_official_portrait.jpg",
-    num_connections: 45,
-    earnings: "1,000,000",
-    location: "location A",
-  },
-  {
-    name: "Lena Whitehouse",
-    profilepicture:
-      "https://upload.wikimedia.org/wikipedia/commons/c/c4/Official_Photograph_of_Prime_Minister_Narendra_Modi_Portrait.png",
-    num_connections: 35,
-    earnings: "900,000",
-    location: "location B",
-  },
-];
+import userApi, { User } from '../../api/user';
 
 export default function Astrologers() {
+  const { data, isError, isLoading } = useQuery<User[]>(
+    ["customer-astrologers"] as unknown as QueryKey,
+    userApi.listAll("astrologers"),
+    {
+      refetchOnWindowFocus: false,
+      onError: () => {
+        window.location.reload();
+      },
+      initialData: [],
+    }
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (isError) return <div>Error...</div>;
   return (
     <main>
       <div className="sticky top-0 mb-4">
         <h1 className="text-2xl font-semibold">Users</h1>
         <Text>
-          View all users and their details. You can also edit their details.
+          View all astrologers and their details. You can also edit their
+          details.
         </Text>
       </div>
       <Card>
@@ -47,13 +41,12 @@ export default function Astrologers() {
               <TableHeaderCell className="text-right">
                 Earnings ($)
               </TableHeaderCell>
-              <TableHeaderCell className="text-right">Location</TableHeaderCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {salesPeople.map((item) => (
-              <TableRow key={item.name}>
+            {data?.map((item) => (
+              <TableRow key={item.id}>
                 <TableCell>
                   <div className="flex flex-row items-center space-x-2">
                     <img
@@ -61,14 +54,18 @@ export default function Astrologers() {
                       alt=""
                       className="w-10 h-10 rounded-full"
                     />
-                    <span>{item.name}</span>
+                    <span>
+                      {item.firstname} {item.middlename} {item.lastname}
+                    </span>
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  {item.num_connections}
+                  {item.comm_history.length}
                 </TableCell>
-                <TableCell className="text-right">{item.earnings}</TableCell>
-                <TableCell className="text-right">{item.location}</TableCell>
+                <TableCell className="text-right">
+                  {item.wallet[0]?.balance}
+                </TableCell>
+                {/* <TableCell className="text-right">{item.location}</TableCell> */}
               </TableRow>
             ))}
           </TableBody>

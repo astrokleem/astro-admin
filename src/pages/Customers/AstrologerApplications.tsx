@@ -1,51 +1,46 @@
+import { QueryKey, useQuery } from '@tanstack/react-query';
 import {
     Badge, Button, Card, Color, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow,
     Text
 } from '@tremor/react';
 
+import userApi from '../../api/user';
+
 const colors: { [key: string]: Color } = {
   "Under Review": "gray",
-  Pending: "yellow",
-  Rejected: "rose",
-  Approved: "emerald",
+  pending: "yellow",
+  rejected: "rose",
+  approved: "emerald",
 };
 
-const transactions = [
-  {
-    transactionID: "#123456",
-    user: "Lena Mayer",
-    item: "Under Armour Shorts",
-    status: "Approved",
-    amount: "$ 49.90",
-    link: "#",
-  },
-  {
-    transactionID: "#234567",
-    user: "Max Smith",
-    item: "Book - Wealth of Nations",
-    status: "Rejected",
-    amount: "$ 19.90",
-    link: "#",
-  },
-  {
-    transactionID: "#345678",
-    user: "Anna Stone",
-    item: "Garmin Forerunner 945",
-    status: "Pending",
-    amount: "$ 499.90",
-    link: "#",
-  },
-  {
-    transactionID: "#345673",
-    user: "Anna Stone",
-    item: "Garmin Forerunner 945",
-    status: "Under Review",
-    amount: "$ 499.90",
-    link: "#",
-  },
-];
+function isoToReadableDate(isoDateString: string): string {
+  const date = new Date(isoDateString);
 
-export default function Example() {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
+  return date.toLocaleString(undefined, options);
+}
+
+export default function AstrologerApplications() {
+  const { data, isError, isLoading } = useQuery(
+    ["customer-astrologers-applications"] as unknown as QueryKey,
+    userApi.listAll("astrologer-applications"),
+    {
+      refetchOnWindowFocus: false,
+      onError: () => {
+        window.location.reload();
+      },
+      initialData: [],
+    }
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (isError) return <div>Error...</div>;
   return (
     <main>
       <div className="sticky top-0 mb-4">
@@ -60,32 +55,53 @@ export default function Example() {
           <TableHead>
             <TableRow>
               <TableHeaderCell>Application ID</TableHeaderCell>
-              <TableHeaderCell>Full Name</TableHeaderCell>
-              <TableHeaderCell>Enail</TableHeaderCell>
+              <TableHeaderCell>Name</TableHeaderCell>
+              <TableHeaderCell>Email</TableHeaderCell>
+              <TableHeaderCell>Phone</TableHeaderCell>
+              <TableHeaderCell>Applied On</TableHeaderCell>
+              <TableHeaderCell>Updated On</TableHeaderCell>
+              <TableHeaderCell>Experience</TableHeaderCell>
+              <TableHeaderCell>Qualifications</TableHeaderCell>
+              <TableHeaderCell>Specialties</TableHeaderCell>
               <TableHeaderCell>Status</TableHeaderCell>
-              <TableHeaderCell className="text-right">
-                Applied On
-              </TableHeaderCell>
-              <TableHeaderCell></TableHeaderCell>
+              {/* <TableHeaderCell></TableHeaderCell> */}
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {transactions.map((item) => (
-              <TableRow key={item.transactionID}>
-                <TableCell>{item.transactionID}</TableCell>
-                <TableCell>{item.user}</TableCell>
-                <TableCell>{item.item}</TableCell>
+            {data?.map((item: any) => (
+              <TableRow key={item.id}>
+                <TableCell>#{item.id}</TableCell>
+                <TableCell>
+                  <div className="flex flex-row items-center space-x-2">
+                    <img
+                      src={item.user.profilepicture}
+                      alt=""
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <span>
+                      {item.user.firstname} {item.user.middlename}{" "}
+                      {item.user.lastname}
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell>{item.email}</TableCell>
+                <TableCell>{item.user.phoneNumber}</TableCell>
+
+                <TableCell>{isoToReadableDate(item.createdAt)}</TableCell>
+                <TableCell>{isoToReadableDate(item.updatedAt)}</TableCell>
+                <TableCell>{item.experience}</TableCell>
+                <TableCell>{item.qualification}</TableCell>
+                <TableCell>{item.specialties}</TableCell>
+                {/* <TableCell>
+                  <Button size="xs" variant="secondary" color="gray">
+                    View
+                  </Button>
+                </TableCell> */}
                 <TableCell>
                   <Badge color={colors[item.status]} size="xs">
                     {item.status}
                   </Badge>
-                </TableCell>
-                <TableCell className="text-right">{item.amount}</TableCell>
-                <TableCell>
-                  <Button size="xs" variant="secondary" color="gray">
-                    View
-                  </Button>
                 </TableCell>
               </TableRow>
             ))}

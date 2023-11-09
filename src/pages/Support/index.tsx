@@ -16,6 +16,9 @@ function Support() {
     onError: () => {
       window.location.reload();
     },
+    initialData: {
+      tickets: [],
+    },
   });
 
   if (isLoading) return <div>Loading...</div>;

@@ -1,33 +1,33 @@
-import {
-    ArrowNarrowRightIcon, CashIcon, ShoppingBagIcon, ShoppingCartIcon, UsersIcon
-} from '@heroicons/react/solid';
-import { Button, Card, Flex, Grid, Icon, Text, Title } from '@tremor/react';
+import { Link } from 'react-router-dom';
+
+import { ShoppingBagIcon, UsersIcon } from '@heroicons/react/solid';
+import { Card, Flex, Grid, Icon, Text, Title } from '@tremor/react';
 
 const categories = [
   {
     title: "Sales",
-    text: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-        tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.`,
+    text: `Sales are activities related to selling or the number of goods sold in a given targeted time period. `,
     icon: ShoppingBagIcon,
+    link: "/transactions",
   },
-  {
-    title: "Profit",
-    text: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-        tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.`,
-    icon: CashIcon,
-  },
+  // {
+  //   title: "Profit",
+  //   text: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+  //       tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.`,
+  //   icon: CashIcon,
+  // },
   {
     title: "Customers",
-    text: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-        tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.`,
+    text: `A customer is an individual or business that purchases another company's goods or services.`,
     icon: UsersIcon,
+    link: "/users",
   },
-  {
-    title: "Orders",
-    text: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-        tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.`,
-    icon: ShoppingCartIcon,
-  },
+  // {
+  //   title: "Orders",
+  //   text: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+  //       tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.`,
+  //   icon: ShoppingCartIcon,
+  // },
 ];
 
 export default function Dummy() {
@@ -44,14 +44,7 @@ export default function Dummy() {
             <Title className="mt-6">{item.title}</Title>
             <Text className="mt-2">{item.text}</Text>
             <Flex className="pt-4 mt-6 border-t">
-              <Button
-                size="xs"
-                variant="light"
-                icon={ArrowNarrowRightIcon}
-                iconPosition="right"
-              >
-                View more
-              </Button>
+              <Link to={item.link}>View more</Link>
             </Flex>
           </Card>
         ))}

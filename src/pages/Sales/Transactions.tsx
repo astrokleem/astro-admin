@@ -1,8 +1,10 @@
+import { QueryKey, useQuery } from '@tanstack/react-query';
 import {
     Badge, Button, Card, CategoryBar, Color, Flex, Grid, Legend, Metric, Table, TableBody,
     TableCell, TableHead, TableHeaderCell, TableRow, Text, Title
 } from '@tremor/react';
 
+import transactionApi from '../../api/transactions';
 import { ApplicationsSheet } from '../Customers/Components/applicationSheet';
 
 const colors: { [key: string]: Color } = {
@@ -12,335 +14,22 @@ const colors: { [key: string]: Color } = {
   pending: "yellow",
 };
 
-type Categories = {
-  title: string;
-  metric: string;
-  icon?: unknown;
-  color: Color;
-} & (
-  | {
-      type: "categorical";
-      subCategoryValues: number[];
-      subCategoryColors: string[];
-      subCategoryTitles: string[];
-    }
-  | {
-      type?: "text";
-    }
-);
-
-const categories: Categories[] = [
-  {
-    title: "Sum of Successful Payments",
-    metric: "74576",
-    color: "indigo",
-  },
-  {
-    title: "Total Transactions",
-    metric: "26",
-    color: "fuchsia",
-    type: "categorical",
-    subCategoryValues: [18, 3, 1],
-    subCategoryTitles: ["Successful", "Failed", "Pending"],
-    subCategoryColors: ["emerald", "rose", "amber"],
-  },
-  {
-    title: "Count of Unique Users",
-    metric: "1",
-    color: "amber",
-  },
-];
-
-const transactions = [
-  {
-    orderId: "order_MbrqIK6OYyvuX5",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 59000,
-    currency: "INR",
-  },
-  {
-    orderId: "order_MbryCfQHNQQRxW",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "failed",
-    amount: 236000,
-    currency: "INR",
-  },
-  {
-    orderId: "order_MbsA8E8KGLpdUI",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 59000,
-    currency: "INR",
-  },
-  {
-    orderId: "order_MbselyvW32QZyv",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 35400,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Mbsh8bZJrdeKhg",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_MbsiZ0DLbNtVtm",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Mbsl3soibYDcPM",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "failed",
-    amount: 11800,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Mbsux1q07E0xMq",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 59000,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Mc6aqKl0R7RGgd",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 11800,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Mc6xfEaSTqvyqJ",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: null,
-    status: "cancelled",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Mc6z7JskZB6YaH",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: null,
-    status: "cancelled",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Mc7ll3Ftpan3rj",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Mc7nTP3HdwkJCm",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: null,
-    status: "cancelled",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_McwCZIDqyxgNYM",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 1180000,
-    currency: "INR",
-  },
-  {
-    orderId: "order_McwkihgiKPTusW",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_McwlsojjLU6uvc",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 11800,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Md0o9opjvvunyZ",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 35400,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Md4BanjapgP3re",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Md5j0idmgQXLUX",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "failed",
-    amount: 11800,
-    currency: "INR",
-  },
-  {
-    orderId: "order_Md5kRiLf88d1Bj",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 5900000,
-    currency: "INR",
-  },
-  {
-    orderId: "order_MeF480LtFzPbKn",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: null,
-    status: "cancelled",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_MerosXRQKbGMws",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 59000,
-    currency: "INR",
-  },
-  {
-    orderId: "order_MipSds9s08QDRK",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_MjgMRH7EP9dpz0",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_MjgwzeaegbfkKl",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: "1:wallet_recharge",
-    status: "paid",
-    amount: 5900,
-    currency: "INR",
-  },
-  {
-    orderId: "order_MkBObDEtqnPA9j",
-    user: {
-      firstname: "Divyansh",
-      lastname: "Gupta",
-    },
-    paid_for: null,
-    status: "pending",
-    amount: 5900,
-    currency: "INR",
-  },
-];
-
 export default function Transactions() {
+  const { data, isError, isLoading } = useQuery<any>(
+    ["transactions"] as unknown as QueryKey,
+    transactionApi.listAll,
+    {
+      refetchOnWindowFocus: false,
+      onError: () => {
+        window.location.reload();
+      },
+      initialData: [],
+    }
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (isError) return <div>Error...</div>;
   return (
     <main>
       <div className="sticky top-0 mb-4">
@@ -349,7 +38,7 @@ export default function Transactions() {
       </div>
       <div className="flex flex-col space-y-4">
         <Grid numItemsSm={2} numItemsLg={3} className="gap-6">
-          {categories.map((item) => (
+          {data?.paymentSummary?.map((item: any) => (
             <Card
               key={item.title}
               decoration="top"
@@ -406,7 +95,7 @@ export default function Transactions() {
             </TableHead>
 
             <TableBody>
-              {transactions.map((item) => (
+              {data?.trasactionDetails?.map((item: any) => (
                 <TableRow key={item.orderId}>
                   <TableCell>{item.orderId}</TableCell>
                   <TableCell>
